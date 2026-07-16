@@ -3,6 +3,15 @@ import requests
 import pandas as pd
 import os
 import sys
+import nltk
+
+# Auto-download required NLTK resources on startup for native python environments
+for package in ["stopwords", "punkt", "wordnet"]:
+    try:
+        nltk.data.find(f"corpora/{package}" if package != "punkt" else f"tokenizers/{package}")
+    except LookupError:
+        nltk.download(package, quiet=True)
+
 
 # Add project root to sys.path to support fallback in-process inference
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
