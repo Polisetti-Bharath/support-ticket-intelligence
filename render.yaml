@@ -1,0 +1,22 @@
+services:
+  # 1. Backend FastAPI Service
+  - type: web
+    name: support-ticket-api
+    env: docker
+    dockerfilePath: Dockerfile
+    dockerCommand: uvicorn app.api.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+
+  # 2. Frontend Streamlit Dashboard
+  - type: web
+    name: support-ticket-dashboard
+    env: docker
+    dockerfilePath: Dockerfile
+    dockerCommand: streamlit run app/frontend/streamlit_app.py --server.port $PORT --server.address 0.0.0.0
+    plan: free
+    envVars:
+      - key: API_URL
+        fromService:
+          name: support-ticket-api
+          type: web
+          property: host
