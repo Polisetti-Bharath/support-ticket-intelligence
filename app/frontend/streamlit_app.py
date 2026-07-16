@@ -227,42 +227,15 @@ if "description" not in st.session_state:
 if "results" not in st.session_state:
     st.session_state.results = None
 
-# Sidebar Controls & API Status
-with st.sidebar:
-    st.title("⚙️ Control Panel")
-    
-    # Check Backend Health Status
-    try:
-        response = requests.get(f"{API_URL}/health", timeout=2)
-        if response.status_code == 200:
-            st.success("🟢 API Service Connected")
-            use_api = True
-        else:
-            st.warning("🟡 Service Offline, local execution")
-            use_api = False
-    except Exception:
-        st.info("ℹ️ Running in Sandbox (Offline-First)")
-        use_api = False
-        
-    st.markdown("---")
-    st.markdown("### 📸 Focus Mode")
-    st.write("Toggle specific views below to isolate panels for clean presentations:")
-    screenshot_mode = st.radio(
-        "Select Visible Section:",
-        ["Show All Sections", "Part 1: Ticket Classification", "Part 2: Explainability Factors", "Part 3: Historical Resolutions"]
-    )
-    
-    # If in screenshot mode, render input forms in sidebar for edits
-    submitted_sidebar = False
-    if screenshot_mode != "Show All Sections":
-        st.markdown("---")
-        st.markdown("### 📝 Modify Inputs")
-        sb_subject = st.text_input("Ticket Subject", value=st.session_state.subject, key="sb_subj")
-        sb_description = st.text_area("Ticket Description", value=st.session_state.description, height=150, key="sb_desc")
-        
-        st.session_state.subject = sb_subject
-        st.session_state.description = sb_description
-        submitted_sidebar = st.button("Run Intelligence Engine", type="primary", key="sb_submit")
+# Check Backend Health Status silently
+try:
+    response = requests.get(f"{API_URL}/health", timeout=2)
+    use_api = (response.status_code == 200)
+except Exception:
+    use_api = False
+
+screenshot_mode = "Show All Sections"
+submitted_sidebar = False
 
 # Header Banner (only displayed if not isolating a part for clean screenshotting)
 if screenshot_mode == "Show All Sections":
