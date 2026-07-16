@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import sys
 import nltk
+import textwrap
 
 # Auto-download required NLTK resources on startup for native python environments
 for package in ["stopwords", "punkt", "wordnet"]:
@@ -27,7 +28,7 @@ st.set_page_config(
 )
 
 # Inject custom layout styles for high-end aesthetics
-st.markdown("""
+st.markdown(textwrap.dedent("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
@@ -173,7 +174,7 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
 </style>
-""", unsafe_allow_html=True)
+"""), unsafe_allow_html=True)
 
 API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 
@@ -244,8 +245,8 @@ with st.sidebar:
         use_api = False
         
     st.markdown("---")
-    st.markdown("### 📸 LinkedIn Post Capture Mode")
-    st.write("Toggle specific views below to isolate panels for clean screenshots:")
+    st.markdown("### 📸 Focus Mode")
+    st.write("Toggle specific views below to isolate panels for clean presentations:")
     screenshot_mode = st.radio(
         "Select Visible Section:",
         ["Show All Sections", "Part 1: Ticket Classification", "Part 2: Explainability Factors", "Part 3: Historical Resolutions"]
@@ -265,7 +266,7 @@ with st.sidebar:
 
 # Header Banner (only displayed if not isolating a part for clean screenshotting)
 if screenshot_mode == "Show All Sections":
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
     <div style="
         background: linear-gradient(135deg, #f97316 0%, #d97706 100%);
         padding: 30px;
@@ -278,7 +279,7 @@ if screenshot_mode == "Show All Sections":
         <h1 style="color: white; margin: 0; font-size: 2.6rem; font-weight: 800; font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.5px;">🎫 Support Ticket Intelligence System</h1>
         <p style="color: #ffedd5; margin: 10px 0 0 0; font-size: 1.15rem; font-weight: 400; font-family: 'Plus Jakarta Sans', sans-serif;">Real-time Natural Language Processing for Automated Classification, Explanations, and Similarity Matching</p>
     </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
     st.divider()
 
 # Main Page Inputs (only if "Show All Sections" is active)

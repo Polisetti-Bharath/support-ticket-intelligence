@@ -12,7 +12,7 @@ services:
     name: support-ticket-dashboard
     env: docker
     dockerfilePath: Dockerfile
-    dockerCommand: streamlit run app/frontend/streamlit_app.py --server.port $PORT --server.address 0.0.0.0
+    dockerCommand: streamlit run app/frontend/streamlit_app.py --server.port $PORT --server.address 0.0.0.0 --server.enableCORS false --server.enableXsrfProtection false
     plan: free
     envVars:
       - key: API_URL
